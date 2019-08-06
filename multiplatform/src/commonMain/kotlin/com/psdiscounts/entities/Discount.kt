@@ -1,4 +1,4 @@
-package com.psdiscounts.multiplatform.entities
+package com.psdiscounts.entities
 
 data class Discount(
     val game: String,
