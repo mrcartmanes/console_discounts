@@ -27,18 +27,17 @@ package com.psdiscounts.domain
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
-abstract class UseCase<out Type, in Params> where Type : Any {
+abstract class UseCase<out Type> {
 
-    abstract suspend fun run(params: Params): Either<Exception, Type>
+    abstract suspend fun run(): Type
 
-    suspend operator fun invoke(params: Params, onSuccess: (Type) -> Unit, onFailure: (Exception) -> Unit) {
-        val result = run(params)
+    suspend operator fun invoke(onSuccess: (Type) -> Unit, onFailure: (Exception) -> Unit) {
         coroutineScope {
-            launch(uiDispatcher) {
-                result.fold(
-                    failed = { onFailure(it) },
-                    succeeded = { onSuccess(it) }
-                )
+            try {
+                val result = run()
+                launch(uiContext) { onSuccess(result) }
+            } catch (e: Exception) {
+                launch(uiContext) { onFailure(e) }
             }
         }
     }

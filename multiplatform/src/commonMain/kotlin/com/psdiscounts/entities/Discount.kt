@@ -1,8 +1,9 @@
 package com.psdiscounts.entities
 
 data class Discount(
+    val store: String,
     val game: String,
-    val posterURL: String,
+    val posterURL: String?,
     val oldPrice: Double,
     val newPrice: Double
 ) : Comparable<Double> {

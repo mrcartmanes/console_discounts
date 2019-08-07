@@ -17,10 +17,15 @@ kotlin {
         commonMain.dependencies {
             implementation kotlin('stdlib-common')
             implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${versions.coroutines}"
+            implementation "org.kodein.di:kodein-di-core:${versions.kodein}"
+            implementation("io.ktor:ktor-client-core:${versions.ktor}")
         }
         androidMain.dependencies {
             implementation kotlin('stdlib-common')
             implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+            implementation "org.kodein.di:kodein-di-generic-jvm:${versions.kodein}"
+            implementation "org.kodein.di:kodein-di-framework-android-x:${versions.kodein}"
+            implementation("io.ktor:ktor-client-android:${versions.ktor}")
         }
     }
 }

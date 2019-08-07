@@ -27,8 +27,8 @@ package com.psdiscounts.domain
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 
-actual val uiDispatcher: CoroutineContext
+actual val uiContext: CoroutineContext
     get() = Dispatchers.Main
 
-actual val defaultDispatcher: CoroutineContext
+actual val threadContext: CoroutineContext
     get() = Dispatchers.Default
