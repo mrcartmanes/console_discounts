@@ -2,30 +2,29 @@ apply plugin: 'kotlin-multiplatform'
 
 kotlin {
     targets {
-        final def iOSTarget = System.getenv('SDK_NAME')?.startsWith("iphoneos") ? presets.iosArm64 : presets.iosX64
+        final def iOSTarget = System.getenv('SDK_NAME')?.startsWith("iphoneos") \
+                              ? presets.iosArm64 : presets.iosX64
 
-        /*fromPreset(iOSTarget, 'ios') {
+        fromPreset(iOSTarget, 'ios') {
             binaries {
                 framework('SharedCode')
             }
-        }*/
+        }
 
         fromPreset(presets.jvm, 'android')
     }
 
     sourceSets {
         commonMain.dependencies {
-            implementation kotlin('stdlib-common')
+            implementation "io.github.microutils:kotlin-logging-common:${versions.kotlin_logging}"
             implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${versions.coroutines}"
-            implementation "org.kodein.di:kodein-di-core:${versions.kodein}"
             implementation("io.ktor:ktor-client-core:${versions.ktor}")
         }
         androidMain.dependencies {
-            implementation kotlin('stdlib-common')
+            implementation "io.github.microutils:kotlin-logging:${versions.kotlin_logging}"
             implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
-            implementation "org.kodein.di:kodein-di-generic-jvm:${versions.kodein}"
-            implementation "org.kodein.di:kodein-di-framework-android-x:${versions.kodein}"
-            implementation("io.ktor:ktor-client-android:${versions.ktor}")
+            implementation "org.jsoup:jsoup:${versions.jsoup}"
+            implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
         }
     }
 }

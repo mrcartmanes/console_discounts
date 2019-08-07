@@ -39,11 +39,11 @@ class MVideo(private val urlDownload: IURLDownload, private val htmlParser: IHtm
 
                     discountsPerPage = oldPrices
                         .mapIndexed { i, s ->
-                            val name = names.getOrNull(i)
+                            val game = names.getOrNull(i)
                             val price = prices.getOrNull(i)
                             val poster = posters.getOrNull(i)
-                            if (name == null || price == null || s.isEmpty()) null
-                            else Discount(storeName, name, poster, s.toDouble(), price.toDouble())
+                            if (game == null || price == null || s.isEmpty()) null
+                            else Discount(storeName, game, poster, s.toDouble(), price.toDouble())
                         }
                         .filterNotNull()
                         .toMutableList()
