@@ -2,7 +2,7 @@
   <artifact type="jar" name="multiplatform-android">
     <output-path>$PROJECT_DIR$/multiplatform/build/libs</output-path>
     <root id="archive" name="multiplatform-android.jar">
-      <element id="module-output" name="multiplatform_androidMain" />
+      <element id="module-output" name="psdiscounts.multiplatform.androidMain" />
     </root>
   </artifact>
 </component>

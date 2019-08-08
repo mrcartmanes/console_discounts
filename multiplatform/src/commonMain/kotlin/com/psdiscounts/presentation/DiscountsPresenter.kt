@@ -4,7 +4,6 @@ import com.psdiscounts.domain.GetDiscounts
 import com.psdiscounts.domain.threadContext
 import com.psdiscounts.entities.Discount
 import kotlinx.coroutines.launch
-import mu.KotlinLogging
 
 interface IDiscountsView {
     fun showDiscount(discount: Discount)
@@ -12,13 +11,15 @@ interface IDiscountsView {
 
 class DiscountsPresenter(private val getDiscountsUseCase: GetDiscounts) : BasePresenter<IDiscountsView>(threadContext) {
 
-    private val logger = KotlinLogging.logger {}
-
     override fun onViewAttached(view: IDiscountsView) {
         presenterScope.launch {
             getDiscountsUseCase(
-                onSuccess = { discounts -> discounts.forEach { logger.info { it } } },
-                onFailure = { logger.error(it) {} }
+                onSuccess = { discounts ->
+                    presenterScope.launch {
+                        discounts.forEach { view.showDiscount(it) }
+                    }
+                },
+                onFailure = { /* FIXME Logger.e(TAG, "Could not get discounts", it) */ }
             )
         }
     }

@@ -31,6 +31,7 @@ class MVideo(private val urlDownload: IURLDownload, private val htmlParser: IHtm
                         urlDownload.downloadText("https://www.mvideo.ru/playstation/ps4-igry-4331/f/category=igry-dlya-playstation-4-ps4-4343/page=$page")
                             ?: ""
                     val names = htmlParser.get(html, "div.c-product-tile__description-wrapper > h4 > a")
+                        .map { it.removePrefix("PS4 игра ") }
                     val prices = htmlParser.get(html, "div.c-pdp-price__current").map { it.filter { c -> isDigit(c) } }
                     val oldPrices =
                         htmlParser.get(html, "span.u-mr-4.c-pdp-price__old").map { it.filter { c -> isDigit(c) } }
