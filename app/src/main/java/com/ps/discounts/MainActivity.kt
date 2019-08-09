@@ -3,8 +3,8 @@ package com.ps.discounts
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.psdiscounts.data.kodein
 import com.psdiscounts.entities.Discount
+import com.psdiscounts.kodein
 import com.psdiscounts.presentation.DiscountsPresenter
 import com.psdiscounts.presentation.IDiscountsView
 import org.kodein.di.erased.instance
