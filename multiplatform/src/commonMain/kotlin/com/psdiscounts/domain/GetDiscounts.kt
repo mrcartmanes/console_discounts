@@ -13,15 +13,17 @@ class GetDiscounts(private val stores: List<IStore>) : UseCase<ReceiveChannel<Di
 
     @ExperimentalCoroutinesApi
     override suspend fun run(scope: CoroutineScope): ReceiveChannel<Discount> = scope.produce {
-        while (true) {
+        val discountsSequences = stores.map { it.getDiscounts() }.toMutableList()
+        while (discountsSequences.isNotEmpty()) {
             select<Discount?> {
-                stores
-                    .map { it.getDiscounts() }
-                    .map { async { it.firstOrNull() } }
-                    .forEach { discount ->
+                discountsSequences.map { sequence ->
+                    async {
+                        sequence.firstOrNull()?.let { it } ?: discountsSequences.remove(sequence); null
+                    }
+                }.forEach { discount ->
                         discount.onAwait { value -> value }
                     }
-            }?.let { send(it) } ?: break
+            }?.let { send(it) }
         }
     }
 }
