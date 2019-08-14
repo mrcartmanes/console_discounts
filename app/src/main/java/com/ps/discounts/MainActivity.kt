@@ -31,4 +31,8 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
     override fun showDiscount(discount: Discount) {
         Log.i("[${discount.store}]", discount.toString())
     }
+
+    override fun discountsUpdateFinished() {
+        Log.i("[DISCOUNTS]", "DONE!")
+    }
 }

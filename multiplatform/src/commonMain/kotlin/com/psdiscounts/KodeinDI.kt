@@ -1,6 +1,7 @@
 package com.psdiscounts
 
-import com.psdiscounts.data.stores.MVideo
+import com.psdiscounts.data.stores.GoodsRu
+import com.psdiscounts.data.stores.PSN
 import com.psdiscounts.domain.GetDiscounts
 import com.psdiscounts.domain.interfaces.IStore
 import com.psdiscounts.presentation.DiscountsPresenter
@@ -13,8 +14,8 @@ expect val kodeinPlatformModule: Kodein.Module
 
 val kodein = Kodein {
     import(kodeinPlatformModule)
-    bind<IStore>(tag = "mvideo1") with singleton { MVideo(instance(), instance(), "mvideo1") }
-    bind<IStore>(tag = "mvideo2") with singleton { MVideo(instance(), instance(), "mvideo2") }
+    bind<IStore>(tag = "goods.ru") with singleton { GoodsRu(instance(), instance()) }
+    bind<IStore>(tag = "psn") with singleton { PSN(instance(), instance()) }
     bind<DiscountsPresenter>() with singleton { DiscountsPresenter(instance()) }
-    bind<GetDiscounts>() with singleton { GetDiscounts(listOf(instance("mvideo1"), instance("mvideo2"))) }
+    bind<GetDiscounts>() with singleton { GetDiscounts(listOf(instance("goods.ru"), instance("psn"))) }
 }

@@ -10,6 +10,7 @@ import kotlinx.coroutines.selects.select
 
 interface IDiscountsView {
     fun showDiscount(discount: Discount)
+    fun discountsUpdateFinished()
 }
 
 class DiscountsPresenter(private val getDiscountsUseCase: GetDiscounts) : BasePresenter<IDiscountsView>(threadContext) {
@@ -21,9 +22,11 @@ class DiscountsPresenter(private val getDiscountsUseCase: GetDiscounts) : BasePr
                 onSuccess = { discounts ->
                     launch {
                         while (true) {
-                            select<Discount?> {
-                                discounts.onReceiveOrNull { discount -> discount }
-                            }?.let { launch(uiContext) { view.showDiscount(it) } } ?: break
+                            val discount = select<Discount?> { discounts.onReceiveOrNull { discount -> discount } }
+                            launch(uiContext) {
+                                discount?.let { view.showDiscount(it) } ?: view.discountsUpdateFinished()
+                            }
+                            if (discount == null) break
                         }
                     }
                 },
