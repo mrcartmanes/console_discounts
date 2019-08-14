@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
         Log.i("[${discount.store}]", discount.toString())
     }
 
-    override fun discountsUpdateFinished() {
+    override fun discountsFinished() {
         Log.i("[DISCOUNTS]", "DONE!")
     }
 }

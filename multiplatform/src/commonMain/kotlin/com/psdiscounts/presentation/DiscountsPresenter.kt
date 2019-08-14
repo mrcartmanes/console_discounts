@@ -6,11 +6,11 @@ import com.psdiscounts.domain.uiContext
 import com.psdiscounts.entities.Discount
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.selects.select
+import kotlinx.coroutines.withContext
 
 interface IDiscountsView {
     fun showDiscount(discount: Discount)
-    fun discountsUpdateFinished()
+    fun discountsFinished()
 }
 
 class DiscountsPresenter(private val getDiscountsUseCase: GetDiscounts) : BasePresenter<IDiscountsView>(threadContext) {
@@ -21,13 +21,10 @@ class DiscountsPresenter(private val getDiscountsUseCase: GetDiscounts) : BasePr
             getDiscountsUseCase(
                 onSuccess = { discounts ->
                     launch {
-                        while (true) {
-                            val discount = select<Discount?> { discounts.onReceiveOrNull { discount -> discount } }
-                            launch(uiContext) {
-                                discount?.let { view.showDiscount(it) } ?: view.discountsUpdateFinished()
-                            }
-                            if (discount == null) break
+                        for (discount in discounts) {
+                            withContext(uiContext) { view.showDiscount(discount) }
                         }
+                        withContext(uiContext) { view.discountsFinished() }
                     }
                 },
                 onFailure = { /* FIXME Logger.e(TAG, "Could not get discounts", it) */ }
