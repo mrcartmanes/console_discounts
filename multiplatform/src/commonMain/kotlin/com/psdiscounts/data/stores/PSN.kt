@@ -5,7 +5,7 @@ import com.psdiscounts.data.interfaces.IURLDownload
 
 class PSN(urlDownload: IURLDownload, htmlParser: IHtmlParser) : HtmlParseStore(urlDownload, htmlParser) {
 
-    override val storeName = "PSN"
+    override val name = "PSN"
     override val gamePrefix = ""
     override val pageURL
         get() = "https://store.playstation.com/ru-ru/grid/STORE-MSF75508-PS4CAT/$page?gameContentType=games&platform=ps4"

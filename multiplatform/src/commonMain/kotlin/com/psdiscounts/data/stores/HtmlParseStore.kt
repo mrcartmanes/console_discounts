@@ -10,7 +10,6 @@ import kotlin.math.min
 
 abstract class HtmlParseStore(private val urlDownload: IURLDownload, private val htmlParser: IHtmlParser) : IStore {
 
-    protected abstract val storeName: String
     protected abstract val pageURL: String
     protected abstract val pageSelector: String
     protected abstract val gameNameSelector: String
@@ -42,7 +41,7 @@ abstract class HtmlParseStore(private val urlDownload: IURLDownload, private val
                     val poster = posters.getOrNull(i)
                     if (price2 == null || price1 == null || game.isEmpty()) null
                     else Discount(
-                        storeName,
+                        name,
                         game,
                         poster,
                         oldPrice = max(price1, price2),

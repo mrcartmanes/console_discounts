@@ -16,6 +16,7 @@ val kodein = Kodein {
     import(kodeinPlatformModule)
     bind<IStore>(tag = "goods.ru") with singleton { GoodsRu(instance(), instance()) }
     bind<IStore>(tag = "psn") with singleton { PSN(instance(), instance()) }
+    bind<List<IStore>>() with singleton { listOf<IStore>(instance("psn"), instance("goods.ru")) }
     bind<DiscountsPresenter>() with singleton { DiscountsPresenter(instance()) }
-    bind<GetDiscounts>() with singleton { GetDiscounts(listOf(instance("goods.ru"), instance("psn"))) }
+    bind<GetDiscounts>() with singleton { GetDiscounts(instance()) }
 }

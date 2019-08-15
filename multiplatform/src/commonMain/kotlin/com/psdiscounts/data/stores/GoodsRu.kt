@@ -5,7 +5,7 @@ import com.psdiscounts.data.interfaces.IURLDownload
 
 class GoodsRu(urlDownload: IURLDownload, htmlParser: IHtmlParser) : HtmlParseStore(urlDownload, htmlParser) {
 
-    override val storeName = "GOODS.RU"
+    override val name = "GOODS.RU"
     override val gamePrefix = "Игра для PlayStation 4 "
     override val pageURL
         get() = "https://goods.ru/catalog/igry-dlya-playstation/set-igry-na-ps-4/page-$page"
