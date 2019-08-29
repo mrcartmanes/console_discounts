@@ -27,7 +27,7 @@ class DiscountsViewAdapter : RecyclerView.Adapter<DiscountsViewAdapter.ViewHolde
         return ViewHolder(TextView(parent.context))
     }
 
-    fun addDiscount(discount: Discount) {
+    fun showDiscount(discount: Discount) {
         discounts.add(discount)
         notifyDataSetChanged()
     }

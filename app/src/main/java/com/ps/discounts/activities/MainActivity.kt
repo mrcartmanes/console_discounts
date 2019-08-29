@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
 
         viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
         tabLayout.setupWithViewPager(viewPager)
+
+        discountsPresenter.getDiscounts()
     }
 
     override fun onStart() {
