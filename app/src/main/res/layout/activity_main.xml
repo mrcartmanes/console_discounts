@@ -9,6 +9,7 @@
         tools:context=".activities.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+            app:elevation="0dp"
             android:theme="@style/AppToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -18,27 +19,25 @@
                 app:title="Скидки PS"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary">
+                android:background="?attr/colorPrimary"/>
 
-            <ProgressBar
-                    android:layout_gravity="end"
-                    android:id="@+id/titleProgressBar"
-                    android:layout_margin="10dp"
-                    android:indeterminate="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-        </androidx.appcompat.widget.Toolbar>
+        <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabMaxWidth="0dp"
+                app:tabGravity="fill"
+                app:tabMode="fixed"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
+    <ProgressBar
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_gravity="end"
+            android:id="@+id/titleProgressBar"
+            android:indeterminate="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabMaxWidth="0dp"
-            app:tabGravity="fill"
-            app:tabMode="fixed"/>
+            android:layout_height="wrap_content"/>
 
     <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"

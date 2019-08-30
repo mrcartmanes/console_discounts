@@ -2,6 +2,7 @@ package com.ps.discounts.activities
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.ps.discounts.R
@@ -27,6 +28,14 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
         tabLayout.setupWithViewPager(viewPager)
 
         titleProgressBar.isVisible = discountsPresenter.getDiscounts()
+
+        setSupportActionBar(toolbar)
+        supportActionBar?.elevation = 0f
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
     }
 
     override fun onStart() {
