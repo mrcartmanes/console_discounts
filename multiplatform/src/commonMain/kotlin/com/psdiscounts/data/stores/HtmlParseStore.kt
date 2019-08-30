@@ -32,7 +32,7 @@ abstract class HtmlParseStore(private val urlDownload: IURLDownload, private val
             val games = htmlParser.get(html, gameNameSelector).map { it.removePrefix(gamePrefix) }
             val prices1 = htmlParser.get(html, price1Selector).map { it.filter { c -> isDigit(c) }.toDoubleOrNull() }
             val prices2 = htmlParser.get(html, price2Selector).map { it.filter { c -> isDigit(c) }.toDoubleOrNull() }
-            val posters = htmlParser.get(html, posterSelector)
+            val posters = htmlParser.get(html, posterSelector).map { urlDownload.downloadImage(it) }
 
             discountsPerPage = games
                 .mapIndexed { i, game ->

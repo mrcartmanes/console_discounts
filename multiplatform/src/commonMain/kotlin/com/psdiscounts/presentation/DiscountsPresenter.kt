@@ -6,6 +6,8 @@ import com.psdiscounts.domain.uiContext
 import com.psdiscounts.entities.Discount
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
 interface IDiscountsView {
@@ -17,6 +19,7 @@ class DiscountsPresenter(private val getDiscountsUseCase: GetDiscounts) : BasePr
 
     private val discounts: MutableList<Discount> = mutableListOf()
     private var discountsJob: Job = Job()
+    private var mutex: Mutex = Mutex()
 
     init {
         discountsJob.cancel()
@@ -31,7 +34,9 @@ class DiscountsPresenter(private val getDiscountsUseCase: GetDiscounts) : BasePr
                         discountsJob = launch {
                             for (discount in discountsChannel) {
                                 withContext(uiContext) { view?.showDiscount(discount) }
-                                discounts.add(discount)
+                                mutex.withLock {
+                                    discounts.add(discount)
+                                }
                             }
                             withContext(uiContext) { view?.discountsFinished() }
                         }
@@ -47,6 +52,12 @@ class DiscountsPresenter(private val getDiscountsUseCase: GetDiscounts) : BasePr
     }
 
     override fun onViewAttached(view: IDiscountsView) {
-        discounts.forEach { view.showDiscount(it) }
+        presenterScope.launch {
+            mutex.withLock {
+                withContext(uiContext) {
+                    discounts.forEach { view.showDiscount(it) }
+                }
+            }
+        }
     }
 }

@@ -1,0 +1,59 @@
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_margin="6dp" android:layout_height="100dp"
+        style="@style/DiscountCard">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ImageView
+                android:id="@+id/poster"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_margin="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/no_image"
+                android:layout_gravity="center_vertical|start"
+                tools:ignore="ContentDescription"/>
+
+        <TextView
+                android:id="@+id/gameName"
+                android:textSize="15sp"
+                android:maxLines="2"
+                android:layout_margin="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/poster"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMaxTextSize="15sp"
+                tools:text="PS4 Игра God of War"/>
+
+        <TextView
+                android:id="@+id/oldPrice"
+                android:textStyle="bold"
+                android:layout_margin="16dp"
+                android:background="@drawable/strikeout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/poster"
+                android:layout_alignParentBottom="true"
+                tools:text="3990.0"/>
+
+        <TextView
+                android:id="@+id/currentPrice"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_margin="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/oldPrice"
+                android:layout_alignParentBottom="true"
+                tools:text="1990.0"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

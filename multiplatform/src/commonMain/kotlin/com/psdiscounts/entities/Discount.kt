@@ -3,7 +3,7 @@ package com.psdiscounts.entities
 data class Discount(
     val store: String,
     val game: String,
-    val posterURL: String?,
+    val poster: ByteArray?,
     val oldPrice: Double,
     val newPrice: Double
 ) : Comparable<Double> {
@@ -12,4 +12,7 @@ data class Discount(
     val absolute = oldPrice - newPrice
 
     override fun compareTo(other: Double): Int = (oldPrice - newPrice).compareTo(other)
+    override fun equals(other: Any?): Boolean = (other as? Discount?)?.game == game
+    override fun hashCode(): Int = game.hashCode()
+    override fun toString(): String = "Discount(store=$store, game=$game, oldPrice=$oldPrice, newPrice=$newPrice)"
 }

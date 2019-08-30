@@ -1,10 +1,13 @@
 package com.ps.discounts.adapters
 
+import android.graphics.BitmapFactory
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.ps.discounts.R
 import com.psdiscounts.entities.Discount
+import kotlinx.android.synthetic.main.discount_card.view.*
 
 class DiscountsViewAdapter : RecyclerView.Adapter<DiscountsViewAdapter.ViewHolder>() {
 
@@ -13,7 +16,12 @@ class DiscountsViewAdapter : RecyclerView.Adapter<DiscountsViewAdapter.ViewHolde
     class ViewHolder(private val v: View) : RecyclerView.ViewHolder(v) {
 
         fun setDiscount(discount: Discount) {
-            (v as TextView).text = "${discount.game} - ${discount.oldPrice} - ${discount.newPrice}"
+            discount.poster?.let { posterBytes ->
+                v.poster.setImageBitmap(BitmapFactory.decodeByteArray(posterBytes, 0, posterBytes.size))
+            }
+            v.oldPrice.text = discount.oldPrice.toString()
+            v.currentPrice.text = discount.newPrice.toString()
+            v.gameName.text = discount.game
         }
     }
 
@@ -24,7 +32,7 @@ class DiscountsViewAdapter : RecyclerView.Adapter<DiscountsViewAdapter.ViewHolde
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(TextView(parent.context))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.discount_card, parent, false))
     }
 
     fun showDiscount(discount: Discount) {
