@@ -13,7 +13,7 @@ class ViewPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
     private val stores: List<IStore> by kodein.instance()
     private val fragments: MutableMap<Int, DiscountsFragment> = mutableMapOf()
-    private val discounts: MutableMap<Int, MutableList<Discount>> = mutableMapOf()
+    private val discounts: MutableMap<Int, MutableSet<Discount>> = mutableMapOf()
 
     override fun getItem(position: Int) = DiscountsFragment()
     override fun getCount() = stores.size
@@ -32,7 +32,7 @@ class ViewPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     }
 
     fun addDiscount(index: Int, discount: Discount) {
-        discounts[index]?.add(discount) ?: discounts.put(index, mutableListOf(discount))
+        discounts[index]?.add(discount) ?: discounts.put(index, mutableSetOf(discount))
         fragments[index]?.showDiscount(discount)
         notifyDataSetChanged()
     }

@@ -3,6 +3,7 @@ package com.ps.discounts.activities
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.ps.discounts.R
 import com.ps.discounts.adapters.ViewPagerAdapter
 import com.psdiscounts.domain.interfaces.IStore
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
         viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
         tabLayout.setupWithViewPager(viewPager)
 
-        discountsPresenter.getDiscounts()
+        titleProgressBar.isVisible = discountsPresenter.getDiscounts()
     }
 
     override fun onStart() {
@@ -49,6 +50,6 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
     }
 
     override fun discountsFinished() {
-        Log.i("[DISCOUNTS]", "DONE!")
+        titleProgressBar.isVisible = false
     }
 }

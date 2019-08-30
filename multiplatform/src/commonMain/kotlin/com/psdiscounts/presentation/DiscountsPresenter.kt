@@ -22,8 +22,8 @@ class DiscountsPresenter(private val getDiscountsUseCase: GetDiscounts) : BasePr
         discountsJob.cancel()
     }
 
-    fun getDiscounts() {
-        if (discountsJob.isCompleted) {
+    fun getDiscounts(force: Boolean = false): Boolean {
+        if (discountsJob.isCompleted && (force || discounts.isEmpty())) {
             discounts.clear()
             discountsJob = presenterScope.launch {
                 getDiscountsUseCase(
@@ -36,10 +36,14 @@ class DiscountsPresenter(private val getDiscountsUseCase: GetDiscounts) : BasePr
                             withContext(uiContext) { view?.discountsFinished() }
                         }
                     },
-                    onFailure = { /* FIXME Logger.e(TAG, "Could not get discounts", it) */ }
+                    onFailure = {
+                        launch(uiContext) { view?.discountsFinished() }
+                    }
                 )
             }
+            return true
         }
+        return false
     }
 
     override fun onViewAttached(view: IDiscountsView) {
