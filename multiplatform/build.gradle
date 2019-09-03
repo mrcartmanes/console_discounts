@@ -19,7 +19,6 @@ kotlin {
             implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${versions.coroutines}"
             implementation "io.ktor:ktor-client-core:${versions.ktor}"
             implementation "org.kodein.di:kodein-di-erased:${versions.kodein}"
-            implementation "org.kodein.di:kodein-di-erased-metadata:${versions.kodein}"
         }
         androidMain.dependencies {
             implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"

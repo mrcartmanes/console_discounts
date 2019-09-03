@@ -3,7 +3,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-            android:id="@+id/mainMenuRefresh"
+            android:id="@+id/refresh"
             android:icon="@android:drawable/stat_notify_sync"
             app:showAsAction="always"
             android:actionLayout="@id/toolbar"

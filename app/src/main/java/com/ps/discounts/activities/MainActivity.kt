@@ -3,6 +3,7 @@ package com.ps.discounts.activities
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.ps.discounts.R
@@ -36,6 +37,19 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.refresh -> {
+                if (discountsPresenter.getDiscounts(true)) {
+                    viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
+                    titleProgressBar.isVisible = true
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onStart() {
