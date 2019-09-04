@@ -10,9 +10,11 @@ import kotlin.math.min
 
 abstract class HtmlParseStore(private val urlDownload: IURLDownload, private val htmlParser: IHtmlParser) : IStore {
 
+    protected abstract val url: String
     protected abstract val pageURL: String
     protected abstract val pageSelector: String
     protected abstract val gameNameSelector: String
+    protected abstract val gameUrlSelector: String
     protected abstract val price1Selector: String
     protected abstract val price2Selector: String
     protected abstract val posterSelector: String
@@ -34,6 +36,7 @@ abstract class HtmlParseStore(private val urlDownload: IURLDownload, private val
             while (discountsPerPage.isEmpty() && page <= pagesCount) {
                 val games =
                     htmlParser.get(html, gameNameSelector).map { it.removePrefix(gamePrefix) }
+                val urls = htmlParser.get(html, gameUrlSelector).map { url + it }
                 val prices1 = htmlParser.get(html, price1Selector)
                     .map { it.filter { c -> isDigit(c) }.toDoubleOrNull() }
                 val prices2 = htmlParser.get(html, price2Selector)
@@ -46,10 +49,12 @@ abstract class HtmlParseStore(private val urlDownload: IURLDownload, private val
                         val price1 = prices1.getOrNull(i)
                         val price2 = prices2.getOrNull(i)
                         val poster = posters.getOrNull(i)
+                        val url = urls.getOrNull(i)
                         if (price2 == null || price1 == null || game.isEmpty()) null
                         else Discount(
                             name,
                             game,
+                            url,
                             poster,
                             oldPrice = max(price1, price2),
                             newPrice = min(price1, price2)

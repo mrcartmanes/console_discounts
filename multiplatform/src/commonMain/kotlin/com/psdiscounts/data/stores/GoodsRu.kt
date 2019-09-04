@@ -6,11 +6,14 @@ import com.psdiscounts.data.interfaces.IURLDownload
 class GoodsRu(urlDownload: IURLDownload, htmlParser: IHtmlParser) : HtmlParseStore(urlDownload, htmlParser) {
 
     override val name = "GOODS.RU"
+    override val url = "https://goods.ru"
     override val gamePrefix = "Игра для PlayStation 4 "
     override val pageURL
-        get() = "https://goods.ru/catalog/igry-dlya-playstation/set-igry-na-ps-4/page-$page"
+        get() = "$url/catalog/igry-dlya-playstation/set-igry-na-ps-4/page-$page"
     override val pageSelector = "a[data-page]"
     override val gameNameSelector = "article.card-prod.card-prod-grid:has(div.previous-price) > header"
+    override val gameUrlSelector =
+        "article.card-prod.card-prod-grid:has(div.previous-price) > a.card-prod--slider[href]"
     override val price1Selector = "article.card-prod.card-prod-grid:has(div.previous-price) > * div.previous-price"
     override val price2Selector =
         "article.card-prod.card-prod-grid:has(div.previous-price) > * div.current.favoritePrice"

@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Скидки PS</string>
-    <string name="search">Поиск...</string>
+    <string name="search">Поиск</string>
+    <string name="refresh">Обновить</string>
+    <string name="smth_went_wrong">Что-то пошло не так :(</string>
+    <string name="could_not_open_url">Не удалось открыть ссылку на данное предложение</string>
+    <string name="ok">OK</string>
 </resources>

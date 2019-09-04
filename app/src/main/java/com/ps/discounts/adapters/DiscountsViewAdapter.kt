@@ -1,10 +1,15 @@
 package com.ps.discounts.adapters
 
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.Intent.ACTION_VIEW
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.ps.discounts.R
@@ -31,6 +36,21 @@ class DiscountsViewAdapter : RecyclerView.Adapter<DiscountsViewAdapter.ViewHolde
             v.oldPrice.text = discount.oldPrice.toString()
             v.currentPrice.text = discount.newPrice.toString()
             v.gameName.text = discount.game
+            v.viewInBrowser.setOnClickListener {
+                try {
+                    val browserIntent = Intent(ACTION_VIEW, Uri.parse(discount.url))
+                    v.context.startActivity(browserIntent)
+                } catch (e: Exception) {
+                    v.context.apply {
+                        AlertDialog.Builder(v.context)
+                            .setTitle(getString(R.string.smth_went_wrong))
+                            .setMessage(getString(R.string.could_not_open_url))
+                            .setPositiveButton(getString(R.string.ok)) { dialog: DialogInterface?, _ -> dialog?.cancel() }
+                            .create()
+                            .show()
+                    }
+                }
+            }
         }
     }
 

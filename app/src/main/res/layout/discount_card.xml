@@ -3,7 +3,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_margin="6dp" android:layout_height="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="6dp"
         style="@style/DiscountCard">
 
     <RelativeLayout
@@ -53,6 +54,17 @@
                 android:layout_toEndOf="@id/oldPrice"
                 android:layout_alignParentBottom="true"
                 tools:text="1990.0"/>
+
+        <ImageButton
+                android:id="@+id/viewInBrowser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="10dp"
+                android:background="@null"
+                android:src="@android:drawable/ic_menu_view"
+                tools:ignore="ContentDescription" />
 
     </RelativeLayout>
 
