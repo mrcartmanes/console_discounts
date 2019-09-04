@@ -4,6 +4,8 @@ import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.ps.discounts.R
 import com.psdiscounts.entities.Discount
@@ -46,14 +48,16 @@ class DiscountsViewAdapter : RecyclerView.Adapter<DiscountsViewAdapter.ViewHolde
         holder.setDiscount(filteredDiscounts[position])
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.discount_card,
-                parent,
-                false
-            )
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.discount_card, parent, false)
+        view.setOnTouchListener { v, _ ->
+            val inputMethodManager =
+                parent.context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(v.windowToken, 0)
+        }
+        return ViewHolder(view)
+    }
 
     fun showDiscount(discount: Discount) {
         discounts.add(discount)

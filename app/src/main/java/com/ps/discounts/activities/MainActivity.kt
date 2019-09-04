@@ -19,6 +19,7 @@ import com.psdiscounts.presentation.IDiscountsView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.kodein.di.erased.instance
 
+
 class MainActivity : AppCompatActivity(), IDiscountsView {
 
     private val discountsPresenter: DiscountsPresenter by kodein.instance()
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
         viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
         tabLayout.setupWithViewPager(viewPager)
 
-        titleProgressBar.isVisible = discountsPresenter.getDiscounts()
+        if (discountsPresenter.getDiscounts()) titleProgressBar.isVisible = true
 
         setSupportActionBar(toolbar)
         supportActionBar?.elevation = 0f
