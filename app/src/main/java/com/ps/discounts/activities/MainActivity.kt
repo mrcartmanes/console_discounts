@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
+import androidx.transition.Slide
 import androidx.transition.TransitionManager
 import com.ps.discounts.R
 import com.ps.discounts.adapters.ViewPagerAdapter
@@ -38,7 +39,21 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
-        val searchView = menu?.findItem(R.id.search)?.actionView as SearchView
+        val searchMenuItem = menu?.findItem(R.id.search)
+        val searchView = searchMenuItem?.actionView as SearchView
+        searchMenuItem.setOnActionExpandListener(
+            object : MenuItem.OnActionExpandListener {
+                override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
+                    TransitionManager.beginDelayedTransition(toolbar, Slide())
+                    return true
+                }
+
+                override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
+                    TransitionManager.beginDelayedTransition(toolbar, Slide())
+                    return true
+                }
+            }
+        )
         searchView.queryHint = getString(R.string.search)
         return true
     }
@@ -50,11 +65,6 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
                     viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
                     titleProgressBar.isVisible = true
                 }
-                true
-            }
-            R.id.search -> {
-                TransitionManager.beginDelayedTransition(toolbar)
-                item.expandActionView()
                 true
             }
             else -> super.onOptionsItemSelected(item)
