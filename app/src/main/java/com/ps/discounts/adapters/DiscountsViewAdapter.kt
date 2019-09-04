@@ -11,7 +11,14 @@ import kotlinx.android.synthetic.main.discount_card.view.*
 
 class DiscountsViewAdapter : RecyclerView.Adapter<DiscountsViewAdapter.ViewHolder>() {
 
-    val discounts: MutableList<Discount> = mutableListOf()
+    var discountsFilter: String = ""
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    private val discounts: MutableList<Discount> = mutableListOf()
+    private var filteredDiscounts: List<Discount> = discounts.toList()
 
     class ViewHolder(private val v: View) : RecyclerView.ViewHolder(v) {
 
@@ -25,15 +32,28 @@ class DiscountsViewAdapter : RecyclerView.Adapter<DiscountsViewAdapter.ViewHolde
         }
     }
 
-    override fun getItemCount(): Int = discounts.size
+    override fun getItemCount(): Int {
+        filteredDiscounts = if (discountsFilter.isEmpty()) discounts; else discounts.filter {
+            it.game.contains(
+                discountsFilter,
+                true
+            )
+        }
+        return filteredDiscounts.size
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setDiscount(discounts[position])
+        holder.setDiscount(filteredDiscounts[position])
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.discount_card, parent, false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.discount_card,
+                parent,
+                false
+            )
+        )
 
     fun showDiscount(discount: Discount) {
         discounts.add(discount)

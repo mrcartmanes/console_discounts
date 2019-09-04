@@ -11,13 +11,19 @@ import org.kodein.di.erased.instance
 
 class ViewPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
+    var discountsFilter: String = ""
+        set(value) {
+            field = value
+            fragments.forEach { it.value.discountsFilter = value }
+        }
+
     private val stores: List<IStore> by kodein.instance()
     private val fragments: MutableMap<Int, DiscountsFragment> = mutableMapOf()
     private val discounts: MutableMap<Int, MutableSet<Discount>> = mutableMapOf()
 
     override fun getItem(position: Int) = DiscountsFragment()
     override fun getCount() = stores.size
-    override fun getPageTitle(position: Int) = "${stores[position].name} (${discounts[position]?.count() ?: 0})"
+    override fun getPageTitle(position: Int) = "${stores[position].name}"
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val fragment = super.instantiateItem(container, position)

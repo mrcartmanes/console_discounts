@@ -13,6 +13,12 @@ import kotlinx.android.synthetic.main.fragment_discounts.view.*
 
 class DiscountsFragment : Fragment() {
 
+    var discountsFilter: String = ""
+        set(value) {
+            (view?.discountsView?.adapter as DiscountsViewAdapter?)?.discountsFilter = value
+            field = value
+        }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_discounts, container, false)
         v.discountsView.adapter = DiscountsViewAdapter()

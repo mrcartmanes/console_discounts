@@ -55,6 +55,18 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
             }
         )
         searchView.queryHint = getString(R.string.search)
+        searchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    (viewPager.adapter as ViewPagerAdapter).discountsFilter = newText ?: ""
+                    return true
+                }
+
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
+            }
+        )
         return true
     }
 
