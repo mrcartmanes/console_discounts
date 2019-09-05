@@ -23,7 +23,13 @@ class ViewPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
     override fun getItem(position: Int) = DiscountsFragment()
     override fun getCount() = stores.size
-    override fun getPageTitle(position: Int) = stores[position].name
+    override fun getPageTitle(position: Int) =
+        "${stores[position].name} [${discounts[position]?.count {
+            discountsFilter.isEmpty() || it.game.contains(
+                discountsFilter,
+                true
+            )
+        } ?: 0}]"
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val fragment = super.instantiateItem(container, position)

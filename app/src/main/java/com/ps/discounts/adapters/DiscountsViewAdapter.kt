@@ -24,8 +24,8 @@ class DiscountsViewAdapter : RecyclerView.Adapter<DiscountsViewAdapter.ViewHolde
             notifyDataSetChanged()
         }
 
-    private val discounts: MutableList<Discount> = mutableListOf()
-    private var filteredDiscounts: List<Discount> = discounts.toList()
+    private val discounts: MutableSet<Discount> = mutableSetOf()
+    private var filteredDiscounts = discounts.toList()
 
     class ViewHolder(private val v: View) : RecyclerView.ViewHolder(v) {
 
@@ -55,8 +55,8 @@ class DiscountsViewAdapter : RecyclerView.Adapter<DiscountsViewAdapter.ViewHolde
     }
 
     override fun getItemCount(): Int {
-        filteredDiscounts = if (discountsFilter.isEmpty()) discounts; else discounts.filter {
-            it.game.contains(
+        filteredDiscounts = discounts.filter {
+            discountsFilter.isEmpty() || it.game.contains(
                 discountsFilter,
                 true
             )
