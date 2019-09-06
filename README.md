@@ -1,1 +1,1 @@
-# psdiscounts
+# console_discounts

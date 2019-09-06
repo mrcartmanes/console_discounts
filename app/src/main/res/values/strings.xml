@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Скидки PS</string>
+    <string name="app_name">Скидки</string>
     <string name="search">Поиск</string>
     <string name="refresh">Обновить</string>
     <string name="smth_went_wrong">Что-то пошло не так :(</string>
