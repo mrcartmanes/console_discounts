@@ -5,37 +5,43 @@ import com.psdiscounts.data.interfaces.IURLDownload
 import com.psdiscounts.data.isDigit
 import com.psdiscounts.domain.interfaces.IStore
 import com.psdiscounts.entities.Discount
+import com.psdiscounts.entities.Platform
 import kotlin.math.max
 import kotlin.math.min
 
 abstract class HtmlParseStore(private val urlDownload: IURLDownload, private val htmlParser: IHtmlParser) : IStore {
 
     protected abstract val url: String
-    protected abstract val pageURL: String
     protected abstract val pageSelector: String
     protected abstract val gameNameSelector: String
     protected abstract val gameUrlSelector: String
     protected abstract val price1Selector: String
     protected abstract val price2Selector: String
     protected abstract val posterSelector: String
-    protected abstract val gamePrefix: String
-    protected var page = 1
 
-    private var discountsPerPage: MutableList<Discount> = mutableListOf()
-    private var html: String = ""
-    private val pagesCount: Int
-        get() {
-            html = urlDownload.downloadText(pageURL) ?: ""
-            return htmlParser.get(html, pageSelector).filterNot { it.isEmpty() }.map { it.toInt() }.max() ?: 0
-        }
+    protected abstract val gamePrefix: Map<Platform, String>
+    protected abstract val pageURL: Map<Platform, String>
 
-    override fun getDiscounts(): Sequence<Discount> {
-        page = 1
-        discountsPerPage.clear()
+    protected var page: MutableMap<Platform, Int> =
+        Platform.values().map { it to 1 }.toMap().toMutableMap()
+    private var discountsPerPage: MutableMap<Platform, MutableList<Discount>> =
+        Platform.values().map { it to mutableListOf<Discount>() }.toMap().toMutableMap()
+
+    override fun getDiscounts(platform: Platform): Sequence<Discount> {
+        page[platform] = 1
         return generateSequence {
-            while (discountsPerPage.isEmpty() && page <= pagesCount) {
+            while (discountsPerPage.getValue(platform).isEmpty()) {
+                val html = urlDownload.downloadText(pageURL.getValue(platform)) ?: ""
+                val pagesCount = htmlParser.get(
+                    html,
+                    pageSelector
+                ).filterNot { it.isEmpty() }.map { it.toInt() }.max() ?: 0
+
+                if (page.getValue(platform) > pagesCount) break
+
                 val games =
-                    htmlParser.get(html, gameNameSelector).map { it.removePrefix(gamePrefix) }
+                    htmlParser.get(html, gameNameSelector)
+                        .map { it.removePrefix(gamePrefix[platform] ?: "") }
                 val urls = htmlParser.get(html, gameUrlSelector).map { url + it }
                 val prices1 = htmlParser.get(html, price1Selector)
                     .map { it.filter { c -> isDigit(c) }.toDoubleOrNull() }
@@ -44,8 +50,7 @@ abstract class HtmlParseStore(private val urlDownload: IURLDownload, private val
                 val posters =
                     htmlParser.get(html, posterSelector).map { urlDownload.downloadImage(it) }
 
-                discountsPerPage = games
-                    .mapIndexed { i, game ->
+                discountsPerPage[platform] = games.mapIndexed { i, game ->
                         val price1 = prices1.getOrNull(i)
                         val price2 = prices2.getOrNull(i)
                         val poster = posters.getOrNull(i)
@@ -54,6 +59,7 @@ abstract class HtmlParseStore(private val urlDownload: IURLDownload, private val
                         else Discount(
                             name,
                             game,
+                            platform,
                             url,
                             poster,
                             oldPrice = max(price1, price2),
@@ -63,10 +69,13 @@ abstract class HtmlParseStore(private val urlDownload: IURLDownload, private val
                     .filterNotNull()
                     .toMutableList()
 
-                page++
+                page[platform] = page.getValue(platform) + 1
             }
 
-            if (discountsPerPage.isNotEmpty()) discountsPerPage.removeAt(0) else null
+            if (discountsPerPage.getValue(platform).isNotEmpty()) discountsPerPage.getValue(platform).removeAt(
+                0
+            )
+            else null
         }
     }
 }

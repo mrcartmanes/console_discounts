@@ -3,6 +3,7 @@ package com.psdiscounts.entities
 data class Discount(
     val store: String,
     val game: String,
+    val platform: Platform,
     val url: String?,
     val poster: ByteArray?,
     val oldPrice: Double,

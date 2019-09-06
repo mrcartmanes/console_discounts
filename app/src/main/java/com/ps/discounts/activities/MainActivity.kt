@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
 
     private val discountsPresenter: DiscountsPresenter by kodein.instance()
     private val stores: List<IStore> by kodein.instance()
+    private val storesAndPlatforms = stores.map { it to it.supportedPlatforms }.toMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +33,9 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
         viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
         tabLayout.setupWithViewPager(viewPager)
 
-        if (discountsPresenter.getDiscounts()) titleProgressBar.isVisible = true
+        if (discountsPresenter.getDiscounts(storesAndPlatforms)) {
+            titleProgressBar.isVisible = true
+        }
 
         setSupportActionBar(toolbar)
         supportActionBar?.elevation = 0f
@@ -74,10 +77,9 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.refresh -> {
-                if (discountsPresenter.getDiscounts(true)) {
-                    viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
-                    titleProgressBar.isVisible = true
-                }
+                discountsPresenter.refresh(storesAndPlatforms)
+                viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
+                titleProgressBar.isVisible = true
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -2,14 +2,20 @@ package com.psdiscounts.data.stores
 
 import com.psdiscounts.data.interfaces.IHtmlParser
 import com.psdiscounts.data.interfaces.IURLDownload
+import com.psdiscounts.entities.Platform
 
 class PSN(urlDownload: IURLDownload, htmlParser: IHtmlParser) : HtmlParseStore(urlDownload, htmlParser) {
 
+    override val supportedPlatforms = listOf(Platform.PS4)
     override val name = "PSN"
     override val url = "https://store.playstation.com"
-    override val gamePrefix = ""
+    override val gamePrefix = mapOf(Platform.PS4 to "")
     override val pageURL
-        get() = "$url/ru-ru/grid/STORE-MSF75508-PS4CAT/$page?gameContentType=games&platform=ps4"
+        get() = mapOf(
+            Platform.PS4 to "$url/ru-ru/grid/STORE-MSF75508-PS4CAT/${page.getValue(
+                Platform.PS4
+            )}?gameContentType=games&platform=ps4"
+        )
     override val pageSelector = "div.grid-header__center > div > div > a.paginator-control__page-number"
     override val gameNameSelector =
         "div.grid-cell.grid-cell--game:has(span.discount-badge__message:contains(%)) > * span[title]"

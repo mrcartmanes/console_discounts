@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="console_discounts.multiplatform.androidMain" target="1.6" />
+      <module name="console_discounts.multiplatform.androidTest" target="1.6" />
       <module name="psdiscounts.multiplatform.androidMain" target="1.6" />
       <module name="psdiscounts.multiplatform.androidTest" target="1.6" />
     </bytecodeTargetLevel>

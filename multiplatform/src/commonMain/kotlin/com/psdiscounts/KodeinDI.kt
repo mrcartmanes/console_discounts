@@ -18,5 +18,5 @@ val kodein = Kodein {
     bind<IStore>(tag = "psn") with singleton { PSN(instance(), instance()) }
     bind<List<IStore>>() with singleton { listOf<IStore>(instance("psn"), instance("goods.ru")) }
     bind<DiscountsPresenter>() with singleton { DiscountsPresenter(instance()) }
-    bind<GetDiscounts>() with singleton { GetDiscounts(instance()) }
+    bind<GetDiscounts>() with singleton { GetDiscounts() }
 }
