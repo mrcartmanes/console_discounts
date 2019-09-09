@@ -97,13 +97,8 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
     }
 
     override fun showDiscount(discount: Discount) {
-        val index = stores.indexOfFirst { store -> store.name == discount.store }
-        if (index >= 0) {
-            (viewPager.adapter as ViewPagerAdapter).addDiscount(index, discount)
-            Log.d("[Discounts]", "Add $discount")
-        } else {
-            Log.w("[Discounts]", "Ignore $discount")
-        }
+        (viewPager.adapter as ViewPagerAdapter).addDiscount(discount)
+        Log.d("[Discounts]", "Add $discount")
     }
 
     override fun discountsFinished() {

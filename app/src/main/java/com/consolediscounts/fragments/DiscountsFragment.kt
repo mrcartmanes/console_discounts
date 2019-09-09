@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.fragment_discounts.view.*
 
 class DiscountsFragment : Fragment() {
 
+    private val discountsCache: MutableSet<Discount> = mutableSetOf()
+
     var discountsFilter: String = ""
         set(value) {
             (view?.discountsView?.adapter as DiscountsViewAdapter?)?.discountsFilter = value
@@ -21,12 +23,21 @@ class DiscountsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_discounts, container, false)
-        v.discountsView.adapter = DiscountsViewAdapter()
+        val adapter = DiscountsViewAdapter()
+        adapter.discountsFilter = discountsFilter
+        v.discountsView.adapter = adapter
         v.discountsView.layoutManager = LinearLayoutManager(container?.context)
+        synchronized(discountsCache) {
+            discountsCache.forEach { adapter.showDiscount(it) }
+            discountsCache.clear()
+        }
         return v
     }
 
     fun showDiscount(discount: Discount) {
-        (view?.discountsView?.adapter as? DiscountsViewAdapter)?.showDiscount(discount)
+        synchronized(discountsCache) {
+            (view?.discountsView?.adapter as DiscountsViewAdapter?)?.showDiscount(discount)
+                ?: discountsCache.add(discount)
+        }
     }
 }
