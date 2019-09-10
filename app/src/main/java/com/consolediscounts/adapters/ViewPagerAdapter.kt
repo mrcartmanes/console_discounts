@@ -1,38 +1,38 @@
 package com.consolediscounts.adapters
 
+import android.content.Context
+import android.graphics.Color
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.consolediscounts.R
 import com.consolediscounts.domain.interfaces.IStore
 import com.consolediscounts.entities.Discount
 import com.consolediscounts.fragments.DiscountsFragment
 import com.consolediscounts.kodein
+import kotlinx.android.synthetic.main.tab.view.*
 import org.kodein.di.erased.instance
 
-class ViewPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class ViewPagerAdapter(fm: FragmentManager, private var context: Context) : FragmentStatePagerAdapter(fm) {
 
     var discountsFilter: String = ""
         set(value) {
             field = value
             fragments.forEach { it.value.discountsFilter = value }
-            notifyDataSetChanged()
+            tabViews.forEach { (i, view) -> view.textView.text = storeHeader(i) }
         }
 
     private val stores: List<IStore> by kodein.instance()
+    private val storesAndPlatforms = stores.flatMap { store -> store.supportedPlatforms.map { store to it } }
     private val fragments: MutableMap<Int, DiscountsFragment> = mutableMapOf()
+    private val tabViews: MutableMap<Int, View> = mutableMapOf()
     private val discounts: MutableMap<Int, MutableSet<Discount>> = mutableMapOf()
 
     override fun getItem(position: Int) = DiscountsFragment()
-    override fun getCount() = stores.flatMap { it.supportedPlatforms }.size
-
-    override fun getPageTitle(position: Int): String {
-        val storesAndPlatforms =
-            stores.flatMap { store -> store.supportedPlatforms.map { store to it } }
-        val store = storesAndPlatforms[position].first.name
-        val platform = storesAndPlatforms[position].second.platformShortName
-        val count = discounts[position]?.count { it.game.contains(discountsFilter, true) } ?: 0
-        return "$store [$count] $platform"
-    }
+    override fun getCount() = storesAndPlatforms.size
+    override fun getPageTitle(position: Int): String = ""
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val fragment = super.instantiateItem(container, position) as DiscountsFragment
@@ -48,14 +48,26 @@ class ViewPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     }
 
     fun addDiscount(discount: Discount) {
-        val storesAndPlatforms =
-            stores.flatMap { store -> store.supportedPlatforms.map { store to it } }
-        val index =
-            storesAndPlatforms.indexOfFirst { it.first.name == discount.store && it.second == discount.platform }
+        val index = storesAndPlatforms.indexOfFirst { it.first.name == discount.store && it.second == discount.platform }
         if (index >= 0) {
             discounts[index]?.add(discount) ?: discounts.put(index, mutableSetOf(discount))
             fragments[index]?.showDiscount(discount)
-            notifyDataSetChanged()
+            tabViews[index]?.textView?.text = storeHeader(index)
         }
+    }
+
+    fun getTabView(position: Int): View {
+        val view = LayoutInflater.from(context).inflate(R.layout.tab, null)
+        view.tagView.text = storesAndPlatforms[position].second.platformShortName
+        view.tagView.color = Color.parseColor(storesAndPlatforms[position].second.color)
+        view.textView.text = storeHeader(position)
+        tabViews[position] = view
+        return view
+    }
+
+    private fun storeHeader(position: Int): String {
+        val store = storesAndPlatforms[position].first.name
+        val count = discounts[position]?.count { discountsFilter.isEmpty() || it.game.contains(discountsFilter, true) } ?: 0
+        return "$store [$count]"
     }
 }

@@ -30,8 +30,7 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
-        tabLayout.setupWithViewPager(viewPager)
+        configureViewPager()
 
         if (discountsPresenter.getDiscounts(storesAndPlatforms)) {
             titleProgressBar.isVisible = true
@@ -78,7 +77,7 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
         return when (item.itemId) {
             R.id.refresh -> {
                 discountsPresenter.refresh(storesAndPlatforms)
-                viewPager.adapter = ViewPagerAdapter(supportFragmentManager)
+                configureViewPager()
                 titleProgressBar.isVisible = true
                 true
             }
@@ -103,5 +102,13 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
 
     override fun discountsFinished() {
         titleProgressBar.isVisible = false
+    }
+
+    private fun configureViewPager() {
+        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, this)
+        tabLayout.setupWithViewPager(viewPager)
+        for (tab in 0..tabLayout.tabCount) {
+            tabLayout.getTabAt(tab)?.customView = (viewPager.adapter as ViewPagerAdapter).getTabView(tab)
+        }
     }
 }
