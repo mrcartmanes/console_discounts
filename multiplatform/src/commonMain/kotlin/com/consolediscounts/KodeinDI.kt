@@ -1,5 +1,6 @@
 package com.consolediscounts
 
+import com.consolediscounts.data.stores.EShop
 import com.consolediscounts.data.stores.GoodsRu
 import com.consolediscounts.data.stores.PSN
 import com.consolediscounts.domain.GetDiscounts
@@ -16,7 +17,7 @@ val kodein = Kodein {
     import(kodeinPlatformModule)
     bind<IStore>(tag = "goods.ru") with singleton { GoodsRu(instance(), instance()) }
     bind<IStore>(tag = "psn") with singleton { PSN(instance(), instance()) }
-    bind<List<IStore>>() with singleton { listOf<IStore>(instance("psn"), instance("goods.ru")) }
+    bind<IStore>(tag = "eshop") with singleton { EShop(instance()) }
     bind<DiscountsPresenter>() with singleton { DiscountsPresenter(instance()) }
     bind<GetDiscounts>() with singleton { GetDiscounts() }
 }

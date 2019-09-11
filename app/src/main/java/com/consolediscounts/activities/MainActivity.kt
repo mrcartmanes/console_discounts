@@ -23,8 +23,9 @@ import org.kodein.di.erased.instance
 class MainActivity : AppCompatActivity(), IDiscountsView {
 
     private val discountsPresenter: DiscountsPresenter by kodein.instance()
-    private val stores: List<IStore> by kodein.instance()
-    private val storesAndPlatforms = stores.map { it to it.supportedPlatforms }.toMap()
+    private val psn: IStore by kodein.instance("psn")
+    private val eShop: IStore by kodein.instance("eshop")
+    private val storesAndPlatforms = listOf(psn, eShop).map { it to it.supportedPlatforms }.toMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,8 +105,17 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
         titleProgressBar.isVisible = false
     }
 
+    override fun discountsFailed(e: Exception) {
+        discountsFinished()
+        Log.e("[Discounts]", "Exception occured", e)
+    }
+
     private fun configureViewPager() {
-        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, this)
+        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, this,
+            storesAndPlatforms
+                .toList()
+                .flatMap { (store, platforms) -> platforms.map { platform -> store to platform } }
+        )
         tabLayout.setupWithViewPager(viewPager)
         for (tab in 0..tabLayout.tabCount) {
             tabLayout.getTabAt(tab)?.customView = (viewPager.adapter as ViewPagerAdapter).getTabView(tab)

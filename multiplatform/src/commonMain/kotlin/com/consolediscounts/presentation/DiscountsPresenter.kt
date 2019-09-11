@@ -15,6 +15,7 @@ import kotlinx.coroutines.withContext
 interface IDiscountsView {
     fun showDiscount(discount: Discount)
     fun discountsFinished()
+    fun discountsFailed(e: Exception)
 }
 
 class DiscountsPresenter(private val getDiscountsUseCase: GetDiscounts) : BasePresenter<IDiscountsView>(threadContext) {
@@ -43,8 +44,8 @@ class DiscountsPresenter(private val getDiscountsUseCase: GetDiscounts) : BasePr
                             withContext(uiContext) { view?.discountsFinished() }
                         }
                     },
-                    onFailure = {
-                        launch(uiContext) { view?.discountsFinished() }
+                    onFailure = { e ->
+                        launch(uiContext) { view?.discountsFailed(e) }
                     }
                 )
             }

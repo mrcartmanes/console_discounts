@@ -13,10 +13,7 @@ import kotlinx.coroutines.launch
 class GetDiscounts : UseCase<Map<IStore, List<Platform>>, ReceiveChannel<Discount>>() {
 
     @ExperimentalCoroutinesApi
-    override suspend fun run(
-        scope: CoroutineScope,
-        params: Map<IStore, List<Platform>>
-    ): ReceiveChannel<Discount> = scope.produce {
+    override suspend fun run(scope: CoroutineScope, params: Map<IStore, List<Platform>>): ReceiveChannel<Discount> = scope.produce {
         params.flatMap { (store, platforms) -> platforms.map { store.getDiscounts(it) } }
             .map { sequence ->
             launch {

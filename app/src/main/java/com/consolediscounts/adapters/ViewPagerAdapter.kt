@@ -10,12 +10,15 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.consolediscounts.R
 import com.consolediscounts.domain.interfaces.IStore
 import com.consolediscounts.entities.Discount
+import com.consolediscounts.entities.Platform
 import com.consolediscounts.fragments.DiscountsFragment
-import com.consolediscounts.kodein
 import kotlinx.android.synthetic.main.tab.view.*
-import org.kodein.di.erased.instance
 
-class ViewPagerAdapter(fm: FragmentManager, private var context: Context) : FragmentStatePagerAdapter(fm) {
+class ViewPagerAdapter(
+    fm: FragmentManager,
+    private var context: Context,
+    private var storesAndPlatforms: List<Pair<IStore, Platform>>
+) : FragmentStatePagerAdapter(fm) {
 
     var discountsFilter: String = ""
         set(value) {
@@ -24,8 +27,6 @@ class ViewPagerAdapter(fm: FragmentManager, private var context: Context) : Frag
             tabViews.forEach { (i, view) -> view.textView.text = storeHeader(i) }
         }
 
-    private val stores: List<IStore> by kodein.instance()
-    private val storesAndPlatforms = stores.flatMap { store -> store.supportedPlatforms.map { store to it } }
     private val fragments: MutableMap<Int, DiscountsFragment> = mutableMapOf()
     private val tabViews: MutableMap<Int, View> = mutableMapOf()
     private val discounts: MutableMap<Int, MutableSet<Discount>> = mutableMapOf()
