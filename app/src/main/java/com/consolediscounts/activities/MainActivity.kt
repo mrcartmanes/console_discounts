@@ -25,7 +25,9 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
     private val discountsPresenter: DiscountsPresenter by kodein.instance()
     private val psn: IStore by kodein.instance("psn")
     private val eShop: IStore by kodein.instance("eshop")
-    private val storesAndPlatforms = listOf(psn, eShop).map { it to it.supportedPlatforms }.toMap()
+    private val microsoft: IStore by kodein.instance("microsoft")
+    private val goodsRu: IStore by kodein.instance("goods.ru")
+    private val storesAndPlatforms = listOf(microsoft, eShop, psn, goodsRu).map { it to it.supportedPlatforms }.toMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

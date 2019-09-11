@@ -18,23 +18,19 @@ class GoodsRu(urlDownload: IURLDownload, htmlParser: IHtmlParser) : HtmlParseSto
         )
     override val pageURL
         get() = mapOf(
-            Platform.PS4 to "$url/catalog/igry-dlya-playstation/set-igry-na-ps-4/page-${page.getValue(
-                Platform.PS4
-            )}",
-            Platform.XboxOne to "$url/catalog/igry-dlya-xbox/set-igry-na-xbox-one/page-${page.getValue(
-                Platform.XboxOne
-            )}",
-            Platform.NintendoSwitch to "$url/catalog/igry-dlya-nintendo-switch/page-${page.getValue(
-                Platform.NintendoSwitch
-            )}"
+            Platform.PS4 to "$url/catalog/igry-dlya-playstation/set-igry-na-ps-4/page-${page.getValue(Platform.PS4)}",
+            Platform.XboxOne to "$url/catalog/igry-dlya-xbox/set-igry-na-xbox-one/page-${page.getValue(Platform.XboxOne)}",
+            Platform.NintendoSwitch to "$url/catalog/igry-dlya-nintendo-switch/page-${page.getValue(Platform.NintendoSwitch)}"
         )
     override val pageSelector = "a[data-page]"
     override val gameNameSelector = "article.card-prod.card-prod-grid:has(div.previous-price) > header"
     override val gameUrlSelector =
         "article.card-prod.card-prod-grid:has(div.previous-price) > a.card-prod--slider[href]"
-    override val price1Selector = "article.card-prod.card-prod-grid:has(div.previous-price) > * div.previous-price"
-    override val price2Selector =
-        "article.card-prod.card-prod-grid:has(div.previous-price) > * div.current.favoritePrice"
-    override val posterSelector =
-        "article.card-prod.card-prod-grid:has(div.previous-price) > * span:nth-child(1) > img[src]"
+    override val priceSelector = "article.card-prod.card-prod-grid:has(div.previous-price) > div.favorite.card-prod--price"
+    override val posterSelector = "article.card-prod.card-prod-grid:has(div.previous-price) > * span:nth-child(1) > img[src]"
+
+    override fun extractPrices(s: String): Pair<Double?, Double?> =
+        "([0-9]*).*\\?([0-9]*)".toRegex().find(s.filterNot { it == ' ' })?.let {
+            it.groupValues[1].toDoubleOrNull() to it.groupValues[2].toDoubleOrNull()
+        } ?: null to null
 }

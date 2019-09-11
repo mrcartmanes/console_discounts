@@ -2,6 +2,7 @@ package com.consolediscounts
 
 import com.consolediscounts.data.stores.EShop
 import com.consolediscounts.data.stores.GoodsRu
+import com.consolediscounts.data.stores.Microsoft
 import com.consolediscounts.data.stores.PSN
 import com.consolediscounts.domain.GetDiscounts
 import com.consolediscounts.domain.interfaces.IStore
@@ -18,6 +19,7 @@ val kodein = Kodein {
     bind<IStore>(tag = "goods.ru") with singleton { GoodsRu(instance(), instance()) }
     bind<IStore>(tag = "psn") with singleton { PSN(instance(), instance()) }
     bind<IStore>(tag = "eshop") with singleton { EShop(instance()) }
+    bind<IStore>(tag = "microsoft") with singleton { Microsoft(instance(), instance()) }
     bind<DiscountsPresenter>() with singleton { DiscountsPresenter(instance()) }
     bind<GetDiscounts>() with singleton { GetDiscounts() }
 }
