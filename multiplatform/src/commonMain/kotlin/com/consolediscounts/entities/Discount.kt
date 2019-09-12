@@ -1,7 +1,9 @@
 package com.consolediscounts.entities
 
+import com.consolediscounts.domain.interfaces.IStore
+
 data class Discount(
-    val store: String,
+    val store: IStore,
     val game: String,
     val platform: Platform,
     val url: String?,

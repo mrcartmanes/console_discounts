@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 
 class EShop(private val urlDownload: IURLDownload) : IStore {
     override val name = "eShop"
+    override val currency = "\u20BD"
     override val supportedPlatforms = listOf(Platform.NintendoSwitch)
 
     @Serializable
@@ -60,7 +61,7 @@ class EShop(private val urlDownload: IURLDownload) : IStore {
                         try {
                             val discount = Json.nonstrict.parse(Discounts.serializer(), jsonPricesResponse).prices.first()
                             Discount(
-                                store = name,
+                                store = this,
                                 game = game.title,
                                 platform = platform,
                                 url = "https://www.nintendo.ru" + game.url,

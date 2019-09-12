@@ -6,6 +6,7 @@ import com.consolediscounts.entities.Platform
 
 class Microsoft(urlDownload: IURLDownload, htmlParser: IHtmlParser) : HtmlParseStore(urlDownload, htmlParser) {
     override val name = "Microsoft"
+    override val currency = "$"
     override val supportedPlatforms = listOf(Platform.XboxOne)
     override val url = "https://www.microsoft.com"
     override val pageURL: Map<Platform, String>

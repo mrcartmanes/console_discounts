@@ -48,7 +48,7 @@ abstract class HtmlParseStore(private val urlDownload: IURLDownload, private val
                     val url = urls.getOrNull(i)
                     if (price2 == null || price1 == null || game.isEmpty()) null
                     else Discount(
-                        name,
+                        this,
                         game,
                         platform,
                         url,

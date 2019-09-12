@@ -9,6 +9,7 @@ class GoodsRu(urlDownload: IURLDownload, htmlParser: IHtmlParser) : HtmlParseSto
     override val supportedPlatforms =
         listOf(Platform.PS4, Platform.XboxOne, Platform.NintendoSwitch)
     override val name = "GOODS.RU"
+    override val currency = "\u20BD"
     override val url = "https://goods.ru"
     override val gamePrefix
         get() = mapOf(

@@ -49,7 +49,7 @@ class ViewPagerAdapter(
     }
 
     fun addDiscount(discount: Discount) {
-        val index = storesAndPlatforms.indexOfFirst { it.first.name == discount.store && it.second == discount.platform }
+        val index = storesAndPlatforms.indexOfFirst { it.first.name == discount.store.name && it.second == discount.platform }
         if (index >= 0) {
             discounts[index]?.add(discount) ?: discounts.put(index, mutableSetOf(discount))
             fragments[index]?.showDiscount(discount)

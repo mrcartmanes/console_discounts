@@ -8,6 +8,7 @@ class PSN(urlDownload: IURLDownload, htmlParser: IHtmlParser) : HtmlParseStore(u
 
     override val supportedPlatforms = listOf(Platform.PS4)
     override val name = "PSN"
+    override val currency = "\u20BD"
     override val url = "https://store.playstation.com"
     override val gamePrefix = mapOf(Platform.PS4 to "")
     override val pageURL

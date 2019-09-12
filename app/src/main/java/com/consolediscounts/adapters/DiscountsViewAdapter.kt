@@ -33,8 +33,8 @@ class DiscountsViewAdapter : RecyclerView.Adapter<DiscountsViewAdapter.ViewHolde
             discount.poster?.let { posterBytes ->
                 v.poster.setImageBitmap(BitmapFactory.decodeByteArray(posterBytes, 0, posterBytes.size))
             }
-            v.oldPrice.text = discount.oldPrice.toString()
-            v.currentPrice.text = discount.newPrice.toString()
+            v.oldPrice.text = "${discount.oldPrice.toString().removeSuffix(".0")}${discount.store.currency}"
+            v.currentPrice.text = "${discount.newPrice.toString().removeSuffix(".0")}${discount.store.currency}"
             v.gameName.text = discount.game
             v.viewInBrowser.setOnClickListener {
                 try {
