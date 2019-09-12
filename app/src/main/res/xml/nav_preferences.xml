@@ -5,12 +5,12 @@
     <Preference android:layout="@layout/nav_header" />
 
     <Preference
-            app:icon="@android:drawable/ic_menu_info_details"
+            app:icon="@drawable/about"
             app:key="about"
             app:title="@string/about" />
 
     <Preference
-            app:icon="@android:drawable/star_on"
+            app:icon="@drawable/favorite"
             app:key="favorite"
             app:title="@string/favorite" />
 
