@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
     private val microsoft: IStore by kodein.instance("microsoft")
     private val goodsRu: IStore by kodein.instance("goods.ru")
     private val storesAndPlatforms = listOf(microsoft, eShop, psn, goodsRu).map { it to it.supportedPlatforms }.toMap()
+    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +43,14 @@ class MainActivity : AppCompatActivity(), IDiscountsView {
 
         setSupportActionBar(toolbar)
         supportActionBar?.elevation = 0f
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        actionBarDrawerToggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer)
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        actionBarDrawerToggle.syncState()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

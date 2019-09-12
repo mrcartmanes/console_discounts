@@ -5,4 +5,6 @@
     <string name="smth_went_wrong">Что-то пошло не так :(</string>
     <string name="could_not_open_url">Не удалось открыть ссылку на данное предложение</string>
     <string name="ok">OK</string>
+    <string name="open_drawer">OPEN_DRAWER</string>
+    <string name="close_drawer">CLOSE_DRAWER</string>
 </resources>
