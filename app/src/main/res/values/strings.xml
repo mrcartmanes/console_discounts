@@ -7,4 +7,6 @@
     <string name="ok">OK</string>
     <string name="open_drawer">OPEN_DRAWER</string>
     <string name="close_drawer">CLOSE_DRAWER</string>
+    <string name="favorite">Избранное</string>
+    <string name="about">О программе</string>
 </resources>

@@ -54,6 +54,15 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:fitsSystemWindows="true" />
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/nav_header">
+
+        <fragment
+                android:id="@+id/drawerFragment"
+                android:name="com.consolediscounts.fragments.DrawerFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
