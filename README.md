@@ -5,7 +5,9 @@ Console games discounts monitoring by parsing stores websites or accessing JSON 
 ## Development
 
 Project structure: Android Studio
+
 Language: Kotlin Android, Kotlin Multi-platform
+
 Clean architecture
 
 ## Target OS
