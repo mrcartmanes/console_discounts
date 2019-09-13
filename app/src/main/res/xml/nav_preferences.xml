@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference android:layout="@layout/nav_header" />
 
     <Preference
-            app:icon="@drawable/about"
-            app:key="about"
-            app:title="@string/about" />
+            android:icon="@drawable/about"
+            android:title="@string/about" />
 
     <Preference
-            app:icon="@drawable/favorite"
-            app:key="favorite"
-            app:title="@string/favorite" />
+            android:icon="@drawable/favorite"
+            android:title="@string/favorite" />
 
 </PreferenceScreen>
