@@ -95,36 +95,31 @@ Get pending events.
 Response:
 
 - Keypad event:
+
 ```key code (1 byte)```
+
 - Pulse event:
+
 ```line (1 byte)``` - line number where pulse event occured
+
 ```duration (ms)``` - pulse duration in milliseconds
 
-### LOGS (0x15)
+## LOGS (0x15)
 
 Get system logs file. After sending ACK response transport is switched to file send mode (for UART XModem-1K).
-
-```LOGS (0x15)``` - command code
-
-##### Response:
-```ACK```
+No response message is expected.
 
 ### UPDATE (0x16)
 
 Update firmware. After sending ACK response transport is switched to file receive mode (for UART XModem-1K).
-
-```UPDATE (0x16)``` - command code
-
-##### Response:
-```ACK```
+No response message is expected.
 
 ### VERSION (0x17)
 
 Get firmware version in ```major```.```minor``` format.
 
-```VERSION (0x17)``` - command code
+Response:
 
-##### Response:
-```VERSION (0x17)``` - command code
 ```major (1 byte)``` - major version
+
 ```minor (1 byte)``` - minor version
