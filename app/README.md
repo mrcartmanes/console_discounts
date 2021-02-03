@@ -13,9 +13,9 @@ This document describes the synchronous exchange protocol between external pulse
 
     {Code 1b} {ID 1b} {Data length 2b} {Data bytes} {LRC 1b}
 
-```Code``` - command code
+```Code``` - command code (should match in request and response)
     
-```ID``` - message ID should match in request and response
+```ID``` - message ID (should match in request and response)
     
 ```LRC``` - XORed message bytes
 
@@ -38,8 +38,9 @@ Each message should be responsed by the other side with a valid message or with 
 ```duration (2 bytes)```- pulse duration in milliseconds (see scheme below)
 
 ```period (2 bytes)``` - pulse period in milliseconds (see scheme below)
- 
-Example for 2 pulse output (count = 2):
+
+Command is used to put ```count``` pulses on line ```line```. Example for 2 pulse output (count = 2):
+
 ```
             <----- period_ms --------->
              ___________________        ___________________
@@ -49,52 +50,55 @@ Example for 2 pulse output (count = 2):
 
 No response message is expected.
 
-### SET (0x11)
+## SET (0x11)
 
-Command is used to set ```line``` output to ```level```
-
-```OUT (0x11)``` - command code
 ```line (1 byte)``` - line number
+
 ```level (1 byte)``` - level value: 0 (low) or 1 (high)
 
-##### Response:
-```ACK```
+Command is used to set ```line``` output to ```level```. No response message is expected.
 
-### GET (0x12)
+## GET (0x12)
 
 Command is used to get ```line``` current level
 
-```GET (0x12)``` - command code
 ```line (1 byte)``` - line number
 
-##### Response:
+Response:
 
-```GET (0x12)``` - command code
-```line (1 byte)``` - line number
 ```level (1 byte)``` - level value: 0 (low) or 1 (high)
 
-### LISTEN (0x13)
+## LISTEN (0x13)
 
-Subscribe for level change events on output ```line```. Each edge event is reported to POLL command.
-
-```LISTEN (0x13)``` - command code
 ```line (1 byte)``` - line number
-```active level (1 byte)``` - line active level: 0 (low) or 1 (high)
 
-##### Response:
-```ACK```
+```active level (1 byte)``` - active level value: 0 (low) or 1 (high)
 
-### POLL (0x14)
+Command is used to subscribe for pulse events on line ```line```. No response message is expected.
+
+## KEYPAD (0x14)
+
+```output line (1 byte)``` - key column line
+
+```input line (1 byte)``` - key row line
+
+```level``` - default level for column line (0 - low, 1 - high)
+
+```key code (1 byte)``` - key code to report in response to POLL.
+
+Command is used to configure GPIO for single matrix keypad key. No response message is expected.
+
+## POLL (0x14)
 
 Get pending events.
 
-##### Response:
+Response:
 
-- ```ACK``` when there is no pending events
-- Raising or falling edge event occured:
-```LISTEN (0x13)``` - command code
-```line (1 byte)``` - line number
-```level (1 byte)``` - line current level: 0 (low) or 1 (high)
+- Keypad event:
+```key code (1 byte)```
+- Pulse event:
+```line (1 byte)``` - line number where pulse event occured
+```duration (ms)``` - pulse duration in milliseconds
 
 ### LOGS (0x15)
 
