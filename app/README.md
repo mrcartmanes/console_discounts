@@ -25,17 +25,13 @@ Each message should be responsed by the other side with a valid message or with 
 
 - ```ACK (0x00)``` - message successfully received
 
-- ```NAK (0x01)``` - wrong message format LRC mismatch
+- ```NAK (0x01)``` - wrong message format, LRC mismatch or command is not supported in current implementation
 
-### PULSE (0x10)
-
-This command is used to put ```count``` pulses on ```line``` output.
-
-```PULSE (0x10)``` - command code
+## PULSE (0x10)
 
 ```line (1 byte)``` - line number
 
-```count (2 bytes)``` - Òount of pulses (use 65535 for infinite pulses)
+```count (2 bytes)``` - —Åount of pulses (0 for infinite pulses)
 
 ```active level (1 byte)``` - each pulse active level: 0 (low) or 1 (high)
 
@@ -51,8 +47,7 @@ Example for 2 pulse output (count = 2):
     ________|<-- duration_ms -->|______|                   |______  
 ```
 
-##### Response:
-```ACK```
+No response message is expected.
 
 ### SET (0x11)
 
